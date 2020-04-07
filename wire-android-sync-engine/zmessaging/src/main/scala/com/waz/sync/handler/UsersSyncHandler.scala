@@ -56,9 +56,10 @@ class UsersSyncHandler(userService: UserService,
 
   def syncSearchResults(ids: UserId*): Future[SyncResult] = usersClient.loadUsers(ids).future.map {
     case Right(users) =>
-      searchService.updateResults(users)
+      searchService.updateSearchResults(users)
       SyncResult.Success
-    case Left(error)  => SyncResult(error)
+    case Left(error)  =>
+      SyncResult(error)
   }
 
   def syncSelfUser(): Future[SyncResult] = usersClient.loadSelf().future flatMap {
